@@ -1,0 +1,24 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "text": "5,000円以上のご購入で送料無料",
+        "link": "",
+        "background": "#1f3a5f",
+        "text_color": "#ffffff"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo_width": 140,
+        "menu": "main-menu",
+        "sticky": true
+      }
+    }
+  },
+  "order": ["announcement", "header"]
+}

@@ -1,0 +1,26 @@
+{%- comment -%}
+  Usage: {% render 'pagination', paginate: paginate %}
+{%- endcomment -%}
+{%- if paginate.pages > 1 -%}
+  <nav class="pagination" aria-label="{{ 'general.pagination.label' | t }}">
+    <ul class="pagination__list">
+      {%- if paginate.previous -%}
+        <li><a href="{{ paginate.previous.url }}" class="pagination__item" aria-label="{{ 'general.pagination.previous' | t }}">&larr;</a></li>
+      {%- endif -%}
+      {%- for part in paginate.parts -%}
+        <li>
+          {%- if part.is_link -%}
+            <a href="{{ part.url }}" class="pagination__item">{{ part.title }}</a>
+          {%- elsif part.title == paginate.current_page -%}
+            <span class="pagination__item pagination__item--current" aria-current="page">{{ part.title }}</span>
+          {%- else -%}
+            <span class="pagination__item">{{ part.title }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+      {%- if paginate.next -%}
+        <li><a href="{{ paginate.next.url }}" class="pagination__item" aria-label="{{ 'general.pagination.next' | t }}">&rarr;</a></li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}

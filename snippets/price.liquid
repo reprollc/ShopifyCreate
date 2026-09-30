@@ -1,0 +1,38 @@
+{%- comment -%}
+  商品価格を表示します。
+  Usage: {% render 'price', product: product %}
+  Optional: variant（指定時はそのバリエーションの価格を表示）
+{%- endcomment -%}
+{%- liquid
+  if variant
+    assign price = variant.price
+    assign compare_at_price = variant.compare_at_price
+    assign available = variant.available
+  else
+    assign price = product.price
+    assign compare_at_price = product.compare_at_price
+    assign available = product.available
+  endif
+  assign on_sale = false
+  if compare_at_price > price
+    assign on_sale = true
+  endif
+-%}
+<div class="price{% if on_sale %} price--on-sale{% endif %}{% unless available %} price--sold-out{% endunless %}" data-price>
+  {%- if product.price_varies and variant == blank -%}
+    {%- assign price_min = product.price_min | money -%}
+    <span class="price__regular">{{ 'products.product.price.from_price' | t: price: price_min }}</span>
+  {%- else -%}
+    <span class="price__regular" data-price-regular>{{ price | money }}</span>
+  {%- endif -%}
+  <s class="price__compare" data-price-compare{% unless on_sale %} hidden{% endunless %}>{{ compare_at_price | money }}</s>
+  {%- if on_sale -%}
+    <span class="badge badge--sale">{{ 'products.product.on_sale' | t }}</span>
+  {%- endif -%}
+  {%- unless available -%}
+    <span class="badge badge--sold-out">{{ 'products.product.sold_out' | t }}</span>
+  {%- endunless -%}
+  {%- if cart.taxes_included -%}
+    <small class="price__tax">{{ 'products.product.tax_included' | t }}</small>
+  {%- endif -%}
+</div>

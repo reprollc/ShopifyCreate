@@ -1,0 +1,48 @@
+<section class="section customer">
+  <div class="page-width page-width--narrow">
+    <div id="Recover" class="customer__panel" hidden>
+      <h1 class="page-title">{{ 'customer.recover_password.title' | t }}</h1>
+      <p>{{ 'customer.recover_password.subtext' | t }}</p>
+      {%- form 'recover_customer_password', class: 'form' -%}
+        {%- if form.posted_successfully? -%}
+          <p class="form-message form-message--success" role="status">{{ 'customer.recover_password.success' | t }}</p>
+        {%- endif -%}
+        {{ form.errors | default_errors }}
+        <div class="form__row">
+          <label for="RecoverEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input type="email" id="RecoverEmail" name="email" class="field" autocomplete="email" required>
+        </div>
+        <button type="submit" class="button">{{ 'customer.login_page.submit' | t }}</button>
+        <p><a href="#login" class="link-button" data-toggle-recover>{{ 'customer.login_page.cancel' | t }}</a></p>
+      {%- endform -%}
+    </div>
+
+    <div id="Login" class="customer__panel">
+      <h1 class="page-title">{{ 'customer.login_page.title' | t }}</h1>
+      {%- form 'customer_login', class: 'form', novalidate: 'novalidate' -%}
+        {{ form.errors | default_errors }}
+        <div class="form__row">
+          <label for="CustomerEmail">{{ 'customer.login_page.email' | t }}</label>
+          <input type="email" id="CustomerEmail" name="customer[email]" class="field" autocomplete="email" required>
+        </div>
+        {%- if form.password_needed -%}
+          <div class="form__row">
+            <label for="CustomerPassword">{{ 'customer.login_page.password' | t }}</label>
+            <input type="password" id="CustomerPassword" name="customer[password]" class="field" autocomplete="current-password" required>
+          </div>
+          <p><a href="#recover" class="link-button" data-toggle-recover>{{ 'customer.login_page.forgot_password' | t }}</a></p>
+        {%- endif -%}
+        <button type="submit" class="button button--full">{{ 'customer.login_page.sign_in' | t }}</button>
+      {%- endform -%}
+      <p class="text-center"><a href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a></p>
+
+      {%- if shop.checkout.guest_login -%}
+        <hr>
+        <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
+        {%- form 'guest_login' -%}
+          <button type="submit" class="button button--secondary">{{ 'customer.login_page.guest_continue' | t }}</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+<section class="section main-search">
+  <div class="page-width">
+    <h1 class="page-title">{{ 'general.search.title' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+      <label for="SearchInput" class="visually-hidden">{{ 'general.search.placeholder' | t }}</label>
+      <input type="search" id="SearchInput" name="q" value="{{ search.terms | escape }}" placeholder="{{ 'general.search.placeholder' | t }}" class="field">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="button">{{ 'general.search.search' | t }}</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- paginate search.results by 24 -%}
+        <p class="collection-count">{{ 'general.search.results_count' | t: count: search.results_count, terms: search.terms }}</p>
+        {%- if search.results_count == 0 -%}
+          <p class="empty-state">{{ 'general.search.no_results' | t: terms: search.terms }}</p>
+        {%- else -%}
+          <ul class="product-grid" style="--columns-desktop: 4;">
+            {%- for item in search.results -%}
+              <li>
+                {%- case item.object_type -%}
+                  {%- when 'product' -%}
+                    {% render 'product-card', product: item %}
+                  {%- else -%}
+                    <article class="search-result">
+                      <a href="{{ item.url }}">
+                        <h3 class="product-card__title">{{ item.title | escape }}</h3>
+                        <p>{{ item.content | strip_html | truncate: 80 }}</p>
+                      </a>
+                    </article>
+                {%- endcase -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+        {% render 'pagination', paginate: paginate %}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "検索結果",
+  "class": "section-main-search",
+  "settings": []
+}
+{% endschema %}

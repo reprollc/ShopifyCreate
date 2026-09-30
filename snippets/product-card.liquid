@@ -1,0 +1,38 @@
+{%- comment -%}
+  Usage: {% render 'product-card', product: product %}
+{%- endcomment -%}
+{%- liquid
+  assign ratio_class = 'media--' | append: settings.card_image_ratio
+  assign second_image = nil
+  if settings.card_show_second_image and product.media.size > 1
+    assign second_image = product.media[1]
+  endif
+-%}
+<article class="product-card">
+  <a href="{{ product.url }}" class="product-card__link">
+    <div class="product-card__media media {{ ratio_class }}{% if second_image %} product-card__media--hover{% endif %}"
+      {% if settings.card_image_ratio == 'adapt' and product.featured_media %}style="--ratio: {{ product.featured_media.aspect_ratio }}"{% endif %}>
+      {%- if product.featured_media -%}
+        {{ product.featured_media
+          | image_url: width: 800
+          | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, 50vw', widths: '240, 360, 480, 640, 800', class: 'product-card__image'
+        }}
+        {%- if second_image -%}
+          {{ second_image
+            | image_url: width: 800
+            | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 25vw, 50vw', widths: '240, 360, 480, 640, 800', class: 'product-card__image product-card__image--second', alt: ''
+          }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+      {%- endif -%}
+    </div>
+    <div class="product-card__info">
+      {%- if settings.card_show_vendor -%}
+        <p class="product-card__vendor">{{ product.vendor }}</p>
+      {%- endif -%}
+      <h3 class="product-card__title">{{ product.title | escape }}</h3>
+      {% render 'price', product: product %}
+    </div>
+  </a>
+</article>

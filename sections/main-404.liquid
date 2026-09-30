@@ -1,0 +1,16 @@
+<section class="section main-404">
+  <div class="page-width page-width--narrow text-center">
+    <p class="main-404__code">404</p>
+    <h1 class="page-title">{{ 'templates.404.title' | t }}</h1>
+    <p>{{ 'templates.404.subtext' | t }}</p>
+    <a href="{{ routes.all_products_collection_url }}" class="button">{{ 'templates.cart.continue_shopping' | t }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404",
+  "class": "section-main-404",
+  "settings": []
+}
+{% endschema %}

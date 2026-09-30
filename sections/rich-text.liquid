@@ -1,0 +1,56 @@
+<section class="section rich-text rich-text--{{ section.settings.alignment }}">
+  <div class="page-width page-width--narrow">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2 class="section__heading" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h2>
+        {%- when 'text' -%}
+          <div class="rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+        {%- when 'button' -%}
+          {%- if block.settings.label != blank -%}
+            <a href="{{ block.settings.link }}" class="button" {{ block.shopify_attributes }}>{{ block.settings.label | escape }}</a>
+          {%- endif -%}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "テキスト",
+  "class": "section-rich-text",
+  "settings": [
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "配置",
+      "options": [
+        { "value": "left", "label": "左" },
+        { "value": "center", "label": "中央" }
+      ],
+      "default": "center"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "見出し",
+      "settings": [{ "type": "text", "id": "heading", "label": "見出し", "default": "ショップのこだわり" }]
+    },
+    {
+      "type": "text",
+      "name": "テキスト",
+      "settings": [{ "type": "richtext", "id": "text", "label": "テキスト", "default": "<p>ブランドのストーリーや商品へのこだわりを伝えましょう。</p>" }]
+    },
+    {
+      "type": "button",
+      "name": "ボタン",
+      "settings": [
+        { "type": "text", "id": "label", "label": "ラベル", "default": "詳しく見る" },
+        { "type": "url", "id": "link", "label": "リンク" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "テキスト", "blocks": [{ "type": "heading" }, { "type": "text" }] }]
+}
+{% endschema %}

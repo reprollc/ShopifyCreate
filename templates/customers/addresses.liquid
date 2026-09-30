@@ -1,0 +1,57 @@
+{%- comment -%}
+  住所フォームは form 'customer_address' を使用します。
+  国・都道府県のセレクトは Shopify.CountryProvinceSelector（shopify_common.js）で連動させます。
+{%- endcomment -%}
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+
+<section class="section customer">
+  <div class="page-width">
+    <p><a href="{{ routes.account_url }}" class="link-arrow link-arrow--back">{{ 'customer.account.return' | t }}</a></p>
+    <h1 class="page-title">{{ 'customer.addresses.title' | t }}</h1>
+
+    {%- paginate customer.addresses by 10 -%}
+      <details class="accordion">
+        <summary class="accordion__title button">{{ 'customer.addresses.add_new' | t }}</summary>
+        <div class="accordion__content">
+          {%- form 'customer_address', customer.new_address, class: 'form' -%}
+            {%- render 'address-fields', form: form, id: 'new' -%}
+            <button type="submit" class="button">{{ 'customer.addresses.add' | t }}</button>
+          {%- endform -%}
+        </div>
+      </details>
+
+      <ul class="address-list">
+        {%- for address in customer.addresses -%}
+          <li class="address-card">
+            {%- if address == customer.default_address -%}<p class="badge">{{ 'customer.addresses.default' | t }}</p>{%- endif -%}
+            {{ address | format_address }}
+            <details>
+              <summary class="link-button">{{ 'customer.addresses.edit' | t }}</summary>
+              {%- form 'customer_address', address, class: 'form' -%}
+                {%- render 'address-fields', form: form, id: address.id -%}
+                <button type="submit" class="button">{{ 'customer.addresses.update' | t }}</button>
+              {%- endform -%}
+            </details>
+            <form method="post" action="{{ routes.account_addresses_url }}/{{ address.id }}" onsubmit="return confirm('{{ 'customer.addresses.delete_confirm' | t }}');">
+              <input type="hidden" name="_method" value="delete">
+              <button type="submit" class="link-button">{{ 'customer.addresses.delete' | t }}</button>
+            </form>
+          </li>
+        {%- endfor -%}
+      </ul>
+      {% render 'pagination', paginate: paginate %}
+    {%- endpaginate -%}
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.Shopify || !Shopify.CountryProvinceSelector) return;
+    document.querySelectorAll('[data-address-country]').forEach(function (select) {
+      var id = select.dataset.addressCountry;
+      new Shopify.CountryProvinceSelector('AddressCountry_' + id, 'AddressProvince_' + id, {
+        hideElement: 'AddressProvinceContainer_' + id
+      });
+    });
+  });
+</script>

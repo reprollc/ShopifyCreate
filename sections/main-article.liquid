@@ -1,0 +1,36 @@
+<article class="section main-article">
+  <div class="page-width page-width--narrow">
+    {%- if article.image -%}
+      <div class="main-article__image media media--adapt" style="--ratio: {{ article.image.aspect_ratio }}">
+        {{ article.image | image_url: width: 1600 | image_tag: sizes: '(min-width: 800px) 800px, 100vw', widths: '400, 800, 1200, 1600' }}
+      </div>
+    {%- endif -%}
+    <header class="main-article__header">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | time_tag: format: 'date' }}</time>
+      <h1 class="page-title">{{ article.title | escape }}</h1>
+    </header>
+    <div class="rte">{{ article.content }}</div>
+
+    {%- if article.tags.size > 0 -%}
+      <ul class="tag-list">
+        {%- for tag in article.tags -%}
+          <li><a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="tag">#{{ tag | escape }}</a></li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+
+    <p><a href="{{ blog.url }}" class="link-arrow link-arrow--back">{{ 'blogs.article.back_to_blog' | t: title: blog.title }}</a></p>
+  </div>
+</article>
+
+<script type="application/ld+json">
+  {{ article | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "ブログ記事",
+  "class": "section-main-article",
+  "settings": []
+}
+{% endschema %}

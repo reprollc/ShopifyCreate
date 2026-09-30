@@ -1,0 +1,102 @@
+<section class="image-banner image-banner--{{ section.settings.height }}" style="--overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
+  <div class="image-banner__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image
+        | image_url: width: 2400
+        | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750, 1100, 1500, 1800, 2400', class: 'image-banner__image'
+      }}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder image-banner__image' }}
+    {%- endif -%}
+  </div>
+  <div class="image-banner__content image-banner__content--{{ section.settings.alignment }}">
+    <div class="image-banner__box">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'heading' -%}
+            <h2 class="image-banner__heading h1" {{ block.shopify_attributes }}>{{ block.settings.heading | escape }}</h2>
+          {%- when 'text' -%}
+            <div class="image-banner__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when 'button' -%}
+            {%- if block.settings.label != blank -%}
+              <a href="{{ block.settings.link | default: routes.all_products_collection_url }}" class="button{% if block.settings.secondary %} button--secondary{% endif %}" {{ block.shopify_attributes }}>
+                {{ block.settings.label | escape }}
+              </a>
+            {%- endif -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "メインビジュアル",
+  "class": "section-image-banner",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "画像" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "高さ",
+      "options": [
+        { "value": "small", "label": "小" },
+        { "value": "medium", "label": "中" },
+        { "value": "large", "label": "大" }
+      ],
+      "default": "medium"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "テキストの位置",
+      "options": [
+        { "value": "left", "label": "左" },
+        { "value": "center", "label": "中央" },
+        { "value": "right", "label": "右" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "画像の暗さ",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "見出し",
+      "limit": 1,
+      "settings": [{ "type": "text", "id": "heading", "label": "見出し", "default": "新しい季節のコレクション" }]
+    },
+    {
+      "type": "text",
+      "name": "テキスト",
+      "limit": 1,
+      "settings": [{ "type": "richtext", "id": "text", "label": "テキスト", "default": "<p>こだわりのアイテムをお届けします。</p>" }]
+    },
+    {
+      "type": "button",
+      "name": "ボタン",
+      "limit": 2,
+      "settings": [
+        { "type": "text", "id": "label", "label": "ラベル", "default": "商品を見る" },
+        { "type": "url", "id": "link", "label": "リンク" },
+        { "type": "checkbox", "id": "secondary", "label": "枠線スタイル", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "メインビジュアル",
+      "blocks": [{ "type": "heading" }, { "type": "text" }, { "type": "button" }]
+    }
+  ]
+}
+{% endschema %}

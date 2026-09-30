@@ -1,0 +1,48 @@
+{
+  "sections": {
+    "hero": {
+      "type": "image-banner",
+      "blocks": {
+        "heading": { "type": "heading", "settings": { "heading": "新しい季節のコレクション" } },
+        "text": { "type": "text", "settings": { "text": "<p>こだわりのアイテムをお届けします。</p>" } },
+        "button": { "type": "button", "settings": { "label": "商品を見る", "link": "shopify://collections/all", "secondary": false } }
+      },
+      "block_order": ["heading", "text", "button"],
+      "settings": { "height": "large", "alignment": "center", "overlay_opacity": 30 }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": { "heading": "おすすめ商品", "products_to_show": 8, "columns": 4, "show_view_all": true }
+    },
+    "collections": {
+      "type": "collection-list",
+      "blocks": {
+        "c1": { "type": "collection", "settings": {} },
+        "c2": { "type": "collection", "settings": {} },
+        "c3": { "type": "collection", "settings": {} }
+      },
+      "block_order": ["c1", "c2", "c3"],
+      "settings": { "heading": "カテゴリから探す", "columns": 3 }
+    },
+    "story": {
+      "type": "image-with-text",
+      "settings": {
+        "heading": "ブランドストーリー",
+        "text": "<p>商品づくりへの想いや背景を紹介しましょう。</p>",
+        "image_right": false,
+        "button_label": "",
+        "button_link": ""
+      }
+    },
+    "message": {
+      "type": "rich-text",
+      "blocks": {
+        "heading": { "type": "heading", "settings": { "heading": "ショップのこだわり" } },
+        "text": { "type": "text", "settings": { "text": "<p>ブランドのストーリーや商品へのこだわりを伝えましょう。</p>" } }
+      },
+      "block_order": ["heading", "text"],
+      "settings": { "alignment": "center" }
+    }
+  },
+  "order": ["hero", "featured", "collections", "story", "message"]
+}

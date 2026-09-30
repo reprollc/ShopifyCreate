@@ -1,0 +1,59 @@
+<section class="section collection-list">
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}
+      <div class="section__header"><h2 class="section__heading">{{ section.settings.heading | escape }}</h2></div>
+    {%- endif -%}
+    <ul class="collection-grid" style="--columns-desktop: {{ section.settings.columns }};">
+      {%- for block in section.blocks -%}
+        {%- assign c = block.settings.collection -%}
+        <li {{ block.shopify_attributes }}>
+          <a href="{% if c != blank %}{{ c.url }}{% else %}#{% endif %}" class="collection-card">
+            <div class="collection-card__media media media--square">
+              {%- if c.featured_image -%}
+                {{ c.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 33vw, 50vw', widths: '360, 540, 800' }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+              {%- endif -%}
+            </div>
+            <h3 class="collection-card__title">
+              {%- if c != blank -%}{{ c.title | escape }}{%- else -%}{{ 'sections.collection_list.placeholder_title' | t }}{%- endif -%}
+            </h3>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "コレクション一覧",
+  "class": "section-collection-list",
+  "max_blocks": 12,
+  "settings": [
+    { "type": "text", "id": "heading", "label": "見出し", "default": "カテゴリから探す" },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "列数（PC）",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "コレクション",
+      "settings": [{ "type": "collection", "id": "collection", "label": "コレクション" }]
+    }
+  ],
+  "presets": [
+    {
+      "name": "コレクション一覧",
+      "blocks": [{ "type": "collection" }, { "type": "collection" }, { "type": "collection" }]
+    }
+  ]
+}
+{% endschema %}

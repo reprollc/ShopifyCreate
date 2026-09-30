@@ -1,0 +1,29 @@
+<section class="section">
+  <div class="page-width">
+    <h1 class="page-title">{{ 'collections.all_collections' | t }}</h1>
+    <ul class="collection-grid" style="--columns-desktop: 3;">
+      {%- for collection in collections -%}
+        <li>
+          <a href="{{ collection.url }}" class="collection-card">
+            <div class="collection-card__media media media--square">
+              {%- if collection.featured_image -%}
+                {{ collection.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 33vw, 50vw', widths: '360, 540, 800' }}
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}
+              {%- endif -%}
+            </div>
+            <h2 class="collection-card__title">{{ collection.title | escape }}</h2>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "コレクション一覧ページ",
+  "class": "section-main-list-collections",
+  "settings": []
+}
+{% endschema %}

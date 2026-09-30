@@ -1,0 +1,67 @@
+{%- assign collection = section.settings.collection -%}
+<section class="section featured-collection">
+  <div class="page-width">
+    <div class="section__header">
+      {%- if section.settings.heading != blank -%}
+        <h2 class="section__heading">{{ section.settings.heading | escape }}</h2>
+      {%- endif -%}
+      {%- if section.settings.show_view_all and collection != blank -%}
+        <a href="{{ collection.url }}" class="link-arrow">{{ 'sections.featured_collection.view_all' | t }}</a>
+      {%- endif -%}
+    </div>
+
+    <ul class="product-grid" style="--columns-desktop: {{ section.settings.columns }};">
+      {%- if collection != blank and collection.products_count > 0 -%}
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          <li>{% render 'product-card', product: product %}</li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <li>
+            <article class="product-card">
+              <div class="product-card__media media media--square">
+                {%- capture placeholder -%}product-{% cycle 1, 2, 3, 4, 5, 6 %}{%- endcapture -%}
+                {{ placeholder | placeholder_svg_tag: 'placeholder' }}
+              </div>
+              <div class="product-card__info">
+                <h3 class="product-card__title">{{ 'sections.featured_collection.placeholder_title' | t }}</h3>
+                <div class="price"><span class="price__regular">{{ 1980 | times: 100 | money }}</span></div>
+              </div>
+            </article>
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "おすすめ商品",
+  "class": "section-featured-collection",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "見出し", "default": "おすすめ商品" },
+    { "type": "collection", "id": "collection", "label": "コレクション" },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "表示する商品数",
+      "min": 2,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "列数（PC）",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "「すべて見る」リンクを表示", "default": true }
+  ],
+  "presets": [{ "name": "おすすめ商品" }]
+}
+{% endschema %}
