@@ -15,12 +15,13 @@
       "type": "header",
       "settings": {
         "layout": "centered",
-        "logo_width": 150,
+        "logo_width": 280,
         "menu": "main-menu",
         "utility_style": "text",
         "show_localization": true,
         "sticky": true,
-        "use_brand_logo": true
+        "use_brand_logo": true,
+        "logo_layout": "horizontal"
       }
     }
   },

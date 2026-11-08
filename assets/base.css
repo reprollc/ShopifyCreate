@@ -611,7 +611,10 @@ textarea.field { min-height: 10rem; resize: vertical; }
 /* Brand logo (inline SVG) */
 .brand-logo { display: block; width: 100%; height: auto; }
 .site-header__brand-logo { display: block; width: var(--logo-width, 200px); max-width: 100%; margin: 0 auto; }
-@media (max-width: 989px) { .site-header__brand-logo { width: min(var(--logo-width, 200px), 13rem); } }
+@media (max-width: 989px) {
+  .site-header__brand-logo { width: min(var(--logo-width, 200px), 13rem); }
+  .site-header__brand-logo--horizontal { width: min(var(--logo-width, 260px), 19rem); }
+}
 .site-header--inline .site-header__brand-logo { margin: 0; }
 .hero-statement__logo { width: min(var(--logo-width, 560px), 80vw); margin: 0 auto; }
 .password__logo { width: min(28rem, 70vw); margin: 0 auto 3.2rem; }

@@ -12,7 +12,8 @@
         "overlay_opacity": 20,
         "height": "large",
         "show_logo": true,
-        "logo_width": 560
+        "logo_width": 560,
+        "logo_layout": "stacked"
       }
     },
     "new_arrivals": {

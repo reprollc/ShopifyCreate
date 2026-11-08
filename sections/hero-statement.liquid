@@ -18,7 +18,7 @@
     {%- endif -%}
     {%- if s.show_logo -%}
       <h2 class="hero-statement__logo" style="--logo-width: {{ s.logo_width }}px;">
-        {% render 'brand-logo' %}
+        {% render 'brand-logo', layout: s.logo_layout %}
       </h2>
     {%- elsif s.heading != blank -%}
       <h2 class="hero-statement__heading">{{ s.heading | escape | newline_to_br }}</h2>
@@ -42,6 +42,16 @@
     { "type": "paragraph", "content": "単色背景＋大きなタイトルのメインビジュアルです。画像を設定すると背景画像になります。" },
     { "type": "text", "id": "eyebrow", "label": "小見出し", "default": "WELCOME TO" },
     { "type": "checkbox", "id": "show_logo", "label": "タイトルの代わりにブランドロゴを表示", "default": true },
+    {
+      "type": "select",
+      "id": "logo_layout",
+      "label": "ロゴの形",
+      "options": [
+        { "value": "stacked", "label": "2段（縦積み）" },
+        { "value": "horizontal", "label": "1行（横並び）" }
+      ],
+      "default": "stacked"
+    },
     {
       "type": "range",
       "id": "logo_width",
