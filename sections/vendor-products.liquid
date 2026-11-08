@@ -1,0 +1,50 @@
+{%- comment -%}
+  「このブランドの他の商品」セクション。
+  商品ページでは空の枠だけを出力し、JS が /collections/vendors?q=ブランド名 を
+  このセクション（section_id=vendor-products）で取得して中身を差し込みます。
+  そのため取得時は collection（ブランド別の自動コレクション）の文脈で描画されます。
+{%- endcomment -%}
+{%- liquid
+  assign limit = section.settings.products_to_show
+-%}
+{%- if product != blank -%}
+  {%- if product.vendor != blank -%}
+    <section class="section vendor-products" data-vendor-products
+      data-url="{{ routes.collections_url }}/vendors?q={{ product.vendor | url_encode }}&section_id=vendor-products"
+      data-exclude="{{ product.handle }}" data-limit="{{ limit }}"></section>
+  {%- endif -%}
+{%- elsif collection != blank -%}
+  <section class="section vendor-products">
+    <div class="page-width">
+      <div class="section__header section__header--center">
+        <h2 class="section__heading">{{ 'products.product.more_from_vendor' | t: vendor: collection.title }}</h2>
+      </div>
+      <ul class="product-grid" style="--columns-desktop: {{ limit }};" data-vendor-grid>
+        {%- for item in collection.products limit: 12 -%}
+          <li data-handle="{{ item.handle }}">{% render 'product-card', product: item %}</li>
+        {%- endfor -%}
+      </ul>
+      <div class="section__footer">
+        <a href="{{ collection.url }}" class="link-arrow">{{ 'sections.featured_collection.view_all' | t }}</a>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "同じブランドの商品",
+  "class": "section-vendor-products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "表示する商品数",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

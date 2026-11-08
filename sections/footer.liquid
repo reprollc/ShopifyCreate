@@ -55,6 +55,9 @@
     </ul>
 
     <div class="site-footer__bottom">
+      {%- if section.settings.show_localization -%}
+        <div class="site-footer__localization">{% render 'localization-form', id: 'Footer' %}</div>
+      {%- endif -%}
       {%- if section.settings.show_payment_icons -%}
         <ul class="payment-icons" aria-label="{{ 'sections.footer.payment' | t }}">
           {%- for type in shop.enabled_payment_types -%}
@@ -78,9 +81,10 @@
 {
   "name": "フッター",
   "class": "section-footer",
-  "max_blocks": 4,
+  "max_blocks": 5,
   "settings": [
-    { "type": "checkbox", "id": "show_payment_icons", "label": "決済アイコンを表示", "default": true }
+    { "type": "checkbox", "id": "show_payment_icons", "label": "決済アイコンを表示", "default": true },
+    { "type": "checkbox", "id": "show_localization", "label": "国/通貨セレクターを表示", "default": true }
   ],
   "blocks": [
     {

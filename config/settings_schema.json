@@ -12,7 +12,7 @@
     "settings": [
       { "type": "color", "id": "color_background", "label": "背景色", "default": "#ffffff" },
       { "type": "color", "id": "color_text", "label": "テキスト", "default": "#1a1a1a" },
-      { "type": "color", "id": "color_accent", "label": "アクセント（ボタンなど）", "default": "#1f3a5f" },
+      { "type": "color", "id": "color_accent", "label": "アクセント（ボタンなど）", "default": "#1a1a1a" },
       { "type": "color", "id": "color_accent_text", "label": "アクセント上のテキスト", "default": "#ffffff" },
       { "type": "color", "id": "color_sale", "label": "セール価格", "default": "#c0392b" },
       { "type": "color", "id": "color_border", "label": "枠線", "default": "#e5e5e5" }
@@ -21,7 +21,7 @@
   {
     "name": "タイポグラフィ",
     "settings": [
-      { "type": "font_picker", "id": "font_heading", "label": "見出しフォント", "default": "noto_sans_japanese_n7" },
+      { "type": "font_picker", "id": "font_heading", "label": "見出しフォント", "default": "playfair_display_n4" },
       { "type": "font_picker", "id": "font_body", "label": "本文フォント", "default": "noto_sans_japanese_n4" },
       {
         "type": "range",
@@ -46,7 +46,7 @@
         "max": 1600,
         "step": 50,
         "unit": "px",
-        "default": 1200
+        "default": 1400
       },
       {
         "type": "range",
@@ -56,7 +56,7 @@
         "max": 40,
         "step": 2,
         "unit": "px",
-        "default": 4
+        "default": 0
       }
     ]
   },
@@ -75,7 +75,18 @@
         "default": "square"
       },
       { "type": "checkbox", "id": "card_show_vendor", "label": "ブランド名を表示", "default": false },
-      { "type": "checkbox", "id": "card_show_second_image", "label": "ホバー時に2枚目の画像を表示", "default": true }
+      { "type": "checkbox", "id": "card_show_second_image", "label": "ホバー時に2枚目の画像を表示", "default": true },
+      { "type": "checkbox", "id": "card_show_quick_view", "label": "ホバー時に「詳細を見る」ボタンを表示", "default": true },
+      {
+        "type": "select",
+        "id": "card_image_fit",
+        "label": "画像の表示方法",
+        "options": [
+          { "value": "contain", "label": "全体を表示（余白あり・トルソー写真向け）" },
+          { "value": "cover", "label": "枠いっぱいに表示（切り抜きあり）" }
+        ],
+        "default": "contain"
+      }
     ]
   },
   {

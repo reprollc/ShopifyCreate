@@ -3,28 +3,94 @@
     "main": {
       "type": "main-product",
       "blocks": {
-        "vendor": { "type": "vendor", "settings": {} },
-        "title": { "type": "title", "settings": {} },
-        "price": { "type": "price", "settings": {} },
-        "buy_buttons": { "type": "buy_buttons", "settings": { "show_quantity": true, "show_dynamic_checkout": true } },
-        "description": { "type": "description", "settings": {} },
+        "vendor": {
+          "type": "vendor",
+          "settings": {}
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_quantity": true,
+            "show_dynamic_checkout": true
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
         "shipping": {
           "type": "collapsible",
-          "settings": { "heading": "配送について", "content": "<p>ご注文から3〜5営業日以内に発送いたします。</p>" }
+          "settings": {
+            "heading": "配送について",
+            "content": "<p>ご注文から3〜5営業日以内に発送いたします。</p>"
+          }
         },
         "returns": {
           "type": "collapsible",
-          "settings": { "heading": "返品・交換について", "content": "<p>商品到着後7日以内にご連絡ください。</p>" }
+          "settings": {
+            "heading": "返品・交換について",
+            "content": "<p>商品到着後7日以内にご連絡ください。</p>"
+          }
         },
-        "share": { "type": "share", "settings": {} }
+        "share": {
+          "type": "share",
+          "settings": {}
+        },
+        "question": {
+          "type": "question",
+          "settings": {
+            "label": "この商品について問い合わせる"
+          }
+        },
+        "hold": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "お取り置き・お支払いについて",
+            "content": "<p>お取り置きやお支払い方法については、お気軽にお問い合わせください。</p>"
+          }
+        }
       },
-      "block_order": ["vendor", "title", "price", "buy_buttons", "description", "shipping", "returns", "share"],
-      "settings": {}
+      "block_order": [
+        "vendor",
+        "title",
+        "price",
+        "buy_buttons",
+        "question",
+        "description",
+        "shipping",
+        "hold",
+        "returns",
+        "share"
+      ],
+      "settings": {
+        "gallery_layout": "thumbs-left"
+      }
     },
     "recommendations": {
       "type": "product-recommendations",
-      "settings": { "heading": "こちらもおすすめ", "products_to_show": 4 }
+      "settings": {
+        "heading": "こちらもおすすめ",
+        "products_to_show": 4
+      }
+    },
+    "vendor": {
+      "type": "vendor-products",
+      "settings": {
+        "products_to_show": 4
+      }
     }
   },
-  "order": ["main", "recommendations"]
+  "order": [
+    "main",
+    "vendor",
+    "recommendations"
+  ]
 }

@@ -1,0 +1,48 @@
+<section class="story-overlay story-overlay--{{ section.settings.height }}" style="--story-bg: {{ section.settings.background }};">
+  <div class="story-overlay__media">
+    {%- if section.settings.image != blank -%}
+      {{ section.settings.image | image_url: width: 2400 | image_tag: loading: 'lazy', sizes: '100vw', widths: '750, 1100, 1500, 1800, 2400' }}
+    {%- endif -%}
+  </div>
+  <div class="story-overlay__box">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="story-overlay__heading">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+    <div class="rte">{{ section.settings.text }}</div>
+    {%- if section.settings.button_label != blank -%}
+      <a href="{{ section.settings.button_link }}" class="link-arrow">{{ section.settings.button_label | escape }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "ブランドストーリー（画像＋テキスト枠）",
+  "class": "section-story-overlay",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "背景画像" },
+    { "type": "color", "id": "background", "label": "画像がないときの背景色", "default": "#8B7355" },
+    { "type": "text", "id": "heading", "label": "見出し" },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "本文",
+      "default": "<p>ブランドの始まりや、商品選びへのこだわりをここで伝えましょう。</p><p>お客様に届けたい想いを、短い文章でまとめるのがおすすめです。</p>"
+    },
+    { "type": "text", "id": "button_label", "label": "リンクのラベル" },
+    { "type": "url", "id": "button_link", "label": "リンク" },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "高さ",
+      "options": [
+        { "value": "small", "label": "小" },
+        { "value": "medium", "label": "中" },
+        { "value": "large", "label": "大" }
+      ],
+      "default": "medium"
+    }
+  ],
+  "presets": [{ "name": "ブランドストーリー（画像＋テキスト枠）" }]
+}
+{% endschema %}

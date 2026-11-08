@@ -1,48 +1,117 @@
 {
   "sections": {
     "hero": {
-      "type": "image-banner",
-      "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "新しい季節のコレクション" } },
-        "text": { "type": "text", "settings": { "text": "<p>こだわりのアイテムをお届けします。</p>" } },
-        "button": { "type": "button", "settings": { "label": "商品を見る", "link": "shopify://collections/all", "secondary": false } }
-      },
-      "block_order": ["heading", "text", "button"],
-      "settings": { "height": "large", "alignment": "center", "overlay_opacity": 30 }
-    },
-    "featured": {
-      "type": "featured-collection",
-      "settings": { "heading": "おすすめ商品", "products_to_show": 8, "columns": 4, "show_view_all": true }
-    },
-    "collections": {
-      "type": "collection-list",
-      "blocks": {
-        "c1": { "type": "collection", "settings": {} },
-        "c2": { "type": "collection", "settings": {} },
-        "c3": { "type": "collection", "settings": {} }
-      },
-      "block_order": ["c1", "c2", "c3"],
-      "settings": { "heading": "カテゴリから探す", "columns": 3 }
-    },
-    "story": {
-      "type": "image-with-text",
+      "type": "hero-statement",
       "settings": {
-        "heading": "ブランドストーリー",
-        "text": "<p>商品づくりへの想いや背景を紹介しましょう。</p>",
-        "image_right": false,
-        "button_label": "",
-        "button_link": ""
+        "eyebrow": "WELCOME TO",
+        "heading": "YOUR\nBRAND",
+        "button_label": "SHOP NOW",
+        "button_link": "shopify://collections/all",
+        "background": "#ECB572",
+        "text_color": "#ffffff",
+        "overlay_opacity": 20,
+        "height": "large"
       }
     },
-    "message": {
-      "type": "rich-text",
+    "new_arrivals": {
+      "type": "featured-collection",
+      "settings": {
+        "heading": "What's New",
+        "products_to_show": 6,
+        "columns": 3,
+        "heading_alignment": "center",
+        "show_view_all": true,
+        "view_all_style": "button",
+        "view_all_label": "SHOP NOW"
+      }
+    },
+    "lookbook": {
+      "type": "lookbook-grid",
       "blocks": {
-        "heading": { "type": "heading", "settings": { "heading": "ショップのこだわり" } },
-        "text": { "type": "text", "settings": { "text": "<p>ブランドのストーリーや商品へのこだわりを伝えましょう。</p>" } }
+        "l1": {
+          "type": "image",
+          "settings": {}
+        },
+        "l2": {
+          "type": "image",
+          "settings": {}
+        },
+        "l3": {
+          "type": "image",
+          "settings": {}
+        }
       },
-      "block_order": ["heading", "text"],
-      "settings": { "alignment": "center" }
+      "block_order": [
+        "l1",
+        "l2",
+        "l3"
+      ],
+      "settings": {
+        "heading": "",
+        "columns": 3,
+        "image_ratio": "portrait"
+      }
+    },
+    "shop_the_look": {
+      "type": "shop-the-look",
+      "settings": {
+        "heading": "SHOP THE LOOK",
+        "button_label": "この商品を見る",
+        "reverse": false
+      }
+    },
+    "spotlight": {
+      "type": "spotlight-slideshow",
+      "blocks": {
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "PICK UP",
+            "heading": "ブランド名",
+            "text": "<p>注目のアイテムやブランドを紹介しましょう。</p>",
+            "link_label": "もっと見る",
+            "link": "shopify://collections/all"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "NEW IN",
+            "heading": "コレクション名",
+            "text": "<p>新しく入荷したアイテムの魅力を伝えましょう。</p>",
+            "link_label": "もっと見る",
+            "link": "shopify://collections/all"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2"
+      ],
+      "settings": {
+        "label": "ピックアップ",
+        "autoplay": true,
+        "speed": 6
+      }
+    },
+    "story": {
+      "type": "story-overlay",
+      "settings": {
+        "background": "#8B7355",
+        "heading": "",
+        "text": "<p>ブランドの始まりや、商品選びへのこだわりをここで伝えましょう。</p><p>お客様に届けたい想いを、短い文章でまとめるのがおすすめです。</p>",
+        "button_label": "私たちについて",
+        "button_link": "",
+        "height": "medium"
+      }
     }
   },
-  "order": ["hero", "featured", "collections", "story", "message"]
+  "order": [
+    "hero",
+    "new_arrivals",
+    "lookbook",
+    "shop_the_look",
+    "spotlight",
+    "story"
+  ]
 }

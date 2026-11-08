@@ -180,7 +180,9 @@
       "share": "この商品をシェア",
       "sold_out": "売り切れ",
       "tax_included": "税込",
-      "unavailable": "この組み合わせは選択できません"
+      "unavailable": "この組み合わせは選択できません",
+      "quick_view": "詳細を見る",
+      "more_from_vendor": "{{ vendor }} のその他のアイテム"
     }
   },
   "sections": {
@@ -199,6 +201,9 @@
     },
     "header": {
       "menu": "メニュー"
+    },
+    "slideshow": {
+      "go_to": "{{ index }}枚目のスライドを表示"
     }
   },
   "templates": {
@@ -228,8 +233,13 @@
         "name": "お名前",
         "phone": "電話番号",
         "post_success": "お問い合わせありがとうございます。担当者より折り返しご連絡いたします。",
-        "send": "送信する"
+        "send": "送信する",
+        "product_prefix": "お問い合わせ商品："
       }
     }
+  },
+  "localization": {
+    "country_label": "国/地域",
+    "update": "更新"
   }
 }

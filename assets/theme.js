@@ -57,6 +57,9 @@
       el.textContent = count;
       el.hidden = count === 0;
     });
+    document.querySelectorAll('[data-cart-count-text]').forEach(function (el) {
+      el.textContent = count;
+    });
   }
 
   /* ---------- Product page ---------- */
@@ -277,5 +280,113 @@
     initShare();
     initRecover();
     document.querySelectorAll('[data-product-section]').forEach(initProduct);
+  });
+})();
+
+/* ==========================================================================
+   Additional components: slideshow, vendor products, contact prefill,
+   localization selector
+   ========================================================================== */
+(function () {
+  'use strict';
+
+  function initSlideshow(root) {
+    var slides = root.querySelectorAll('[data-slide]');
+    var dots = root.querySelectorAll('[data-slide-to]');
+    if (slides.length < 2) return;
+    var current = 0;
+    var timer = null;
+    var delay = parseInt(root.dataset.speed, 10) || 6000;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function go(index) {
+      current = (index + slides.length) % slides.length;
+      slides.forEach(function (slide, i) {
+        var active = i === current;
+        slide.hidden = !active;
+        slide.classList.toggle('is-active', active);
+        slide.classList.toggle('is-entering', active);
+      });
+      dots.forEach(function (dot, i) {
+        var active = i === current;
+        dot.classList.toggle('is-active', active);
+        if (active) dot.setAttribute('aria-current', 'true');
+        else dot.removeAttribute('aria-current');
+      });
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function start() {
+      if (root.dataset.autoplay !== 'true' || reduceMotion) return;
+      stop();
+      timer = setInterval(function () { go(current + 1); }, delay);
+    }
+
+    dots.forEach(function (dot) {
+      dot.addEventListener('click', function () { go(parseInt(dot.dataset.slideTo, 10)); start(); });
+    });
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    root.addEventListener('focusin', stop);
+    root.addEventListener('focusout', start);
+
+    // Swipe on touch devices
+    var startX = null;
+    root.addEventListener('touchstart', function (e) { startX = e.touches[0].clientX; }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (startX === null) return;
+      var diff = e.changedTouches[0].clientX - startX;
+      if (Math.abs(diff) > 40) { go(current + (diff < 0 ? 1 : -1)); start(); }
+      startX = null;
+    });
+
+    // Theme editor: show the selected block
+    document.addEventListener('shopify:block:select', function (e) {
+      var index = Array.prototype.indexOf.call(slides, e.target);
+      if (index > -1) { stop(); go(index); }
+    });
+
+    start();
+  }
+
+  function initVendorProducts(el) {
+    fetch(el.dataset.url)
+      .then(function (res) { return res.ok ? res.text() : ''; })
+      .then(function (html) {
+        if (!html) return;
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var section = doc.querySelector('.vendor-products');
+        var grid = section && section.querySelector('[data-vendor-grid]');
+        if (!grid) return;
+        var limit = parseInt(el.dataset.limit, 10) || 4;
+        var shown = 0;
+        Array.prototype.slice.call(grid.children).forEach(function (item) {
+          if (item.dataset.handle === el.dataset.exclude || shown >= limit) item.remove();
+          else shown += 1;
+        });
+        if (shown === 0) return;
+        grid.style.setProperty('--columns-desktop', Math.min(limit, 4));
+        el.innerHTML = section.innerHTML;
+      })
+      .catch(function () {});
+  }
+
+  function initContactPrefill() {
+    var body = document.querySelector('[data-prefill-product]');
+    if (!body || body.value) return;
+    var product = new URLSearchParams(window.location.search).get('product');
+    if (product) body.value = body.dataset.prefillProduct + product + '\n\n';
+  }
+
+  function initLocalization() {
+    document.querySelectorAll('[data-localization-select]').forEach(function (select) {
+      select.addEventListener('change', function () { select.form.submit(); });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('[data-slideshow]').forEach(initSlideshow);
+    document.querySelectorAll('[data-vendor-products]').forEach(initVendorProducts);
+    initContactPrefill();
+    initLocalization();
   });
 })();

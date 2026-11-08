@@ -1,9 +1,21 @@
-<header class="site-header{% if section.settings.sticky %} site-header--sticky{% endif %}" data-header>
+{%- liquid
+  assign layout = section.settings.layout
+  assign text_links = false
+  if section.settings.utility_style == 'text'
+    assign text_links = true
+  endif
+-%}
+<header class="site-header site-header--{{ layout }}{% if section.settings.sticky %} site-header--sticky{% endif %}" data-header>
   <div class="page-width site-header__inner">
-    <button type="button" class="site-header__menu-toggle icon-button" aria-controls="HeaderDrawer" aria-expanded="false" data-menu-toggle>
-      <span class="visually-hidden">{{ 'sections.header.menu' | t }}</span>
-      {% render 'icon', name: 'menu' %}
-    </button>
+    <div class="site-header__start">
+      <button type="button" class="site-header__menu-toggle icon-button" aria-controls="HeaderDrawer" aria-expanded="false" data-menu-toggle>
+        <span class="visually-hidden">{{ 'sections.header.menu' | t }}</span>
+        {% render 'icon', name: 'menu' %}
+      </button>
+      {%- if section.settings.show_localization -%}
+        <div class="site-header__localization">{% render 'localization-form', id: 'Header' %}</div>
+      {%- endif -%}
+    </div>
 
     {%- if request.page_type == 'index' -%}<h1 class="site-header__logo">{%- else -%}<div class="site-header__logo">{%- endif -%}
       <a href="{{ routes.root_url }}" class="site-header__logo-link">
@@ -19,6 +31,38 @@
       </a>
     {%- if request.page_type == 'index' -%}</h1>{%- else -%}</div>{%- endif -%}
 
+    <div class="site-header__icons{% if text_links %} site-header__icons--text{% endif %}">
+      {%- if shop.customer_accounts_enabled -%}
+        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="site-header__utility site-header__utility--account">
+          {%- if text_links -%}
+            {%- if customer -%}{{ 'customer.account.title' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}
+          {%- else -%}
+            <span class="visually-hidden">{% if customer %}{{ 'customer.account.title' | t }}{% else %}{{ 'customer.log_in' | t }}{% endif %}</span>
+            {% render 'icon', name: 'account' %}
+          {%- endif -%}
+        </a>
+      {%- endif -%}
+      <a href="{{ routes.search_url }}" class="site-header__utility site-header__utility--search">
+        {%- if text_links -%}
+          {{ 'general.search.search' | t }}
+        {%- else -%}
+          <span class="visually-hidden">{{ 'general.search.search' | t }}</span>
+          {% render 'icon', name: 'search' %}
+        {%- endif -%}
+      </a>
+      <a href="{{ routes.cart_url }}" class="site-header__utility site-header__cart">
+        {%- if text_links -%}
+          <span class="site-header__cart-label">{{ 'templates.cart.title' | t }}</span>
+          <span class="site-header__cart-icon">{% render 'icon', name: 'cart' %}</span>
+          (<span data-cart-count-text>{{ cart.item_count }}</span>)
+        {%- else -%}
+          <span class="visually-hidden">{{ 'templates.cart.title' | t }}</span>
+          {% render 'icon', name: 'cart' %}
+          <span class="cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+        {%- endif -%}
+      </a>
+    </div>
+
     <nav id="HeaderDrawer" class="site-nav" aria-label="{{ 'sections.header.menu' | t }}" data-menu>
       <button type="button" class="site-nav__close icon-button" data-menu-close>
         <span class="visually-hidden">{{ 'general.close' | t }}</span>
@@ -26,39 +70,81 @@
       </button>
       <ul class="site-nav__list">
         {%- for link in section.settings.menu.links -%}
+          {%- liquid
+            assign promo = nil
+            for block in section.blocks
+              assign block_title = block.settings.menu_item | strip | downcase
+              assign link_title = link.title | strip | downcase
+              if block_title == link_title
+                assign promo = block
+                break
+              endif
+            endfor
+          -%}
           <li class="site-nav__item{% if link.links != blank %} site-nav__item--has-children{% endif %}">
             <a href="{{ link.url }}" class="site-nav__link{% if link.active %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>
               {{ link.title | escape }}
             </a>
             {%- if link.links != blank -%}
-              <ul class="site-nav__submenu">
-                {%- for child in link.links -%}
-                  <li><a href="{{ child.url }}" class="site-nav__sublink"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>
-                {%- endfor -%}
-              </ul>
+              <div class="mega-menu"{% if promo %} {{ promo.shopify_attributes }}{% endif %}>
+                <div class="page-width mega-menu__inner">
+                  <div class="mega-menu__columns">
+                    {%- assign loose_links = link.links | where: 'levels', 0 -%}
+                    {%- if loose_links.size > 0 -%}
+                      <div class="mega-menu__column">
+                        <p class="mega-menu__heading">{{ link.title | escape }}</p>
+                        <ul class="mega-menu__list">
+                          {%- for child in loose_links -%}
+                            <li><a href="{{ child.url }}" class="mega-menu__link"{% if child.current %} aria-current="page"{% endif %}>{{ child.title | escape }}</a></li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                    {%- for child in link.links -%}
+                      {%- if child.links != blank -%}
+                        <div class="mega-menu__column">
+                          <a href="{{ child.url }}" class="mega-menu__heading">{{ child.title | escape }}</a>
+                          <ul class="mega-menu__list">
+                            {%- for grandchild in child.links -%}
+                              <li><a href="{{ grandchild.url }}" class="mega-menu__link"{% if grandchild.current %} aria-current="page"{% endif %}>{{ grandchild.title | escape }}</a></li>
+                            {%- endfor -%}
+                          </ul>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                  {%- if promo -%}
+                    <div class="mega-menu__promos">
+                      {%- for i in (1..2) -%}
+                        {%- liquid
+                          assign image_key = 'image_' | append: i
+                          assign link_key = 'link_' | append: i
+                          assign caption_key = 'caption_' | append: i
+                          assign promo_image = promo.settings[image_key]
+                        -%}
+                        {%- if promo_image != blank -%}
+                          <a href="{{ promo.settings[link_key] | default: link.url }}" class="mega-menu__promo">
+                            <div class="media media--portrait">
+                              {{ promo_image | image_url: width: 500 | image_tag: loading: 'lazy', sizes: '220px', widths: '250, 400, 500' }}
+                            </div>
+                            {%- if promo.settings[caption_key] != blank -%}
+                              <span class="mega-menu__promo-caption">{{ promo.settings[caption_key] | escape }}</span>
+                            {%- endif -%}
+                          </a>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
             {%- endif -%}
           </li>
         {%- endfor -%}
       </ul>
-    </nav>
-
-    <div class="site-header__icons">
-      <a href="{{ routes.search_url }}" class="icon-button">
-        <span class="visually-hidden">{{ 'general.search.search' | t }}</span>
-        {% render 'icon', name: 'search' %}
-      </a>
-      {%- if shop.customer_accounts_enabled -%}
-        <a href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}" class="icon-button">
-          <span class="visually-hidden">{% if customer %}{{ 'customer.account.title' | t }}{% else %}{{ 'customer.log_in' | t }}{% endif %}</span>
-          {% render 'icon', name: 'account' %}
-        </a>
+      {%- if section.settings.show_localization -%}
+        <div class="site-nav__localization">{% render 'localization-form', id: 'Drawer' %}</div>
       {%- endif -%}
-      <a href="{{ routes.cart_url }}" class="icon-button site-header__cart">
-        <span class="visually-hidden">{{ 'templates.cart.title' | t }}</span>
-        {% render 'icon', name: 'cart' %}
-        <span class="cart-count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
-      </a>
-    </div>
+    </nav>
   </div>
 </header>
 <div class="site-nav__overlay" data-menu-overlay hidden></div>
@@ -68,19 +154,55 @@
   "name": "ヘッダー",
   "class": "section-header",
   "settings": [
+    {
+      "type": "select",
+      "id": "layout",
+      "label": "レイアウト",
+      "options": [
+        { "value": "centered", "label": "ロゴ中央・メニュー下段" },
+        { "value": "inline", "label": "ロゴ左・メニュー横並び" }
+      ],
+      "default": "centered"
+    },
     { "type": "image_picker", "id": "logo", "label": "ロゴ画像" },
     {
       "type": "range",
       "id": "logo_width",
       "label": "ロゴの幅",
       "min": 50,
-      "max": 300,
+      "max": 400,
       "step": 10,
       "unit": "px",
-      "default": 140
+      "default": 220
     },
-    { "type": "link_list", "id": "menu", "label": "メニュー", "default": "main-menu" },
+    { "type": "link_list", "id": "menu", "label": "メニュー", "default": "main-menu", "info": "子メニュー・孫メニューを設定すると、メガメニュー（大きなドロップダウン）として表示されます" },
+    {
+      "type": "select",
+      "id": "utility_style",
+      "label": "ログイン・検索・カートの表示",
+      "options": [
+        { "value": "text", "label": "テキスト" },
+        { "value": "icons", "label": "アイコン" }
+      ],
+      "default": "text"
+    },
+    { "type": "checkbox", "id": "show_localization", "label": "国/通貨セレクターを表示", "default": true, "info": "マーケットで複数の国を有効にしている場合のみ表示されます" },
     { "type": "checkbox", "id": "sticky", "label": "スクロール時にヘッダーを固定", "default": true }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu_promo",
+      "name": "メガメニュー画像",
+      "settings": [
+        { "type": "text", "id": "menu_item", "label": "対象のメニュー名", "info": "メニュー項目の名前と完全一致させてください（例：デザイナーから探す）" },
+        { "type": "image_picker", "id": "image_1", "label": "画像1" },
+        { "type": "url", "id": "link_1", "label": "画像1のリンク" },
+        { "type": "text", "id": "caption_1", "label": "画像1のキャプション" },
+        { "type": "image_picker", "id": "image_2", "label": "画像2" },
+        { "type": "url", "id": "link_2", "label": "画像2のリンク" },
+        { "type": "text", "id": "caption_2", "label": "画像2のキャプション" }
+      ]
+    }
   ],
   "enabled_on": { "groups": ["header"] }
 }

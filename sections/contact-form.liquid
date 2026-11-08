@@ -21,7 +21,7 @@
       </div>
       <div class="form__row">
         <label for="ContactBody">{{ 'templates.contact.form.comment' | t }}</label>
-        <textarea id="ContactBody" class="field" name="contact[body]" rows="6">{{ form.body }}</textarea>
+        <textarea id="ContactBody" class="field" name="contact[body]" rows="6" data-prefill-product="{{ 'templates.contact.form.product_prefix' | t | escape }}">{{ form.body }}</textarea>
       </div>
       <button type="submit" class="button">{{ 'templates.contact.form.send' | t }}</button>
     {%- endform -%}

@@ -5,20 +5,26 @@
     "announcement": {
       "type": "announcement-bar",
       "settings": {
-        "text": "5,000円以上のご購入で送料無料",
+        "text": "全国送料無料・税込価格で表示しています",
         "link": "",
-        "background": "#1f3a5f",
-        "text_color": "#ffffff"
+        "background": "#F1F1EE",
+        "text_color": "#555555"
       }
     },
     "header": {
       "type": "header",
       "settings": {
-        "logo_width": 140,
+        "layout": "centered",
+        "logo_width": 220,
         "menu": "main-menu",
+        "utility_style": "text",
+        "show_localization": true,
         "sticky": true
       }
     }
   },
-  "order": ["announcement", "header"]
+  "order": [
+    "announcement",
+    "header"
+  ]
 }

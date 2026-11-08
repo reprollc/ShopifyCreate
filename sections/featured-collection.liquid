@@ -1,12 +1,14 @@
 {%- assign collection = section.settings.collection -%}
 <section class="section featured-collection">
   <div class="page-width">
-    <div class="section__header">
+    {%- assign view_all_as_button = false -%}
+    {%- if section.settings.view_all_style == 'button' -%}{%- assign view_all_as_button = true -%}{%- endif -%}
+    <div class="section__header{% if section.settings.heading_alignment == 'center' %} section__header--center{% endif %}">
       {%- if section.settings.heading != blank -%}
         <h2 class="section__heading">{{ section.settings.heading | escape }}</h2>
       {%- endif -%}
-      {%- if section.settings.show_view_all and collection != blank -%}
-        <a href="{{ collection.url }}" class="link-arrow">{{ 'sections.featured_collection.view_all' | t }}</a>
+      {%- if section.settings.show_view_all and collection != blank and view_all_as_button == false -%}
+        <a href="{{ collection.url }}" class="link-arrow">{%- if section.settings.view_all_label != blank -%}{{ section.settings.view_all_label | escape }}{%- else -%}{{ 'sections.featured_collection.view_all' | t }}{%- endif -%}</a>
       {%- endif -%}
     </div>
 
@@ -32,6 +34,14 @@
         {%- endfor -%}
       {%- endif -%}
     </ul>
+
+    {%- if section.settings.show_view_all and view_all_as_button -%}
+      <div class="section__footer">
+        <a href="{% if collection != blank %}{{ collection.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}" class="button button--dark">
+          {{ section.settings.view_all_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
   </div>
 </section>
 
@@ -60,7 +70,28 @@
       "step": 1,
       "default": 4
     },
-    { "type": "checkbox", "id": "show_view_all", "label": "「すべて見る」リンクを表示", "default": true }
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "見出しの配置",
+      "options": [
+        { "value": "left", "label": "左" },
+        { "value": "center", "label": "中央" }
+      ],
+      "default": "left"
+    },
+    { "type": "checkbox", "id": "show_view_all", "label": "「すべて見る」を表示", "default": true },
+    {
+      "type": "select",
+      "id": "view_all_style",
+      "label": "「すべて見る」の表示形式",
+      "options": [
+        { "value": "link", "label": "見出し横のリンク" },
+        { "value": "button", "label": "商品一覧の下にボタン" }
+      ],
+      "default": "link"
+    },
+    { "type": "text", "id": "view_all_label", "label": "「すべて見る」のラベル", "default": "すべて見る" }
   ],
   "presets": [{ "name": "おすすめ商品" }]
 }

@@ -1,0 +1,71 @@
+{%- liquid
+  assign s = section.settings
+  assign has_image = false
+  if s.image != blank
+    assign has_image = true
+  endif
+-%}
+<section class="hero-statement hero-statement--{{ s.height }}{% if has_image %} hero-statement--has-image{% endif %}"
+  style="--hero-bg: {{ s.background }}; --hero-text: {{ s.text_color }}; --overlay-opacity: {{ s.overlay_opacity | divided_by: 100.0 }};">
+  {%- if has_image -%}
+    <div class="hero-statement__media">
+      {{ s.image | image_url: width: 2400 | image_tag: loading: 'eager', fetchpriority: 'high', sizes: '100vw', widths: '750, 1100, 1500, 1800, 2400', class: 'hero-statement__image' }}
+    </div>
+  {%- endif -%}
+  <div class="hero-statement__content">
+    {%- if s.eyebrow != blank -%}
+      <p class="hero-statement__eyebrow">{{ s.eyebrow | escape }}</p>
+    {%- endif -%}
+    {%- if s.heading != blank -%}
+      <h2 class="hero-statement__heading">{{ s.heading | escape | newline_to_br }}</h2>
+    {%- endif -%}
+    {%- if s.text != blank -%}
+      <div class="hero-statement__text rte">{{ s.text }}</div>
+    {%- endif -%}
+  </div>
+  {%- if s.button_label != blank -%}
+    <div class="hero-statement__actions">
+      <a href="{{ s.button_link | default: routes.all_products_collection_url }}" class="button button--light">{{ s.button_label | escape }}</a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "ブランドヒーロー",
+  "class": "section-hero-statement",
+  "settings": [
+    { "type": "paragraph", "content": "単色背景＋大きなタイトルのメインビジュアルです。画像を設定すると背景画像になります。" },
+    { "type": "text", "id": "eyebrow", "label": "小見出し", "default": "WELCOME TO" },
+    { "type": "textarea", "id": "heading", "label": "タイトル", "default": "YOUR\nBRAND" },
+    { "type": "richtext", "id": "text", "label": "説明文" },
+    { "type": "text", "id": "button_label", "label": "ボタンのラベル", "default": "SHOP NOW" },
+    { "type": "url", "id": "button_link", "label": "ボタンのリンク" },
+    { "type": "color", "id": "background", "label": "背景色", "default": "#ECB572" },
+    { "type": "color", "id": "text_color", "label": "文字色", "default": "#ffffff" },
+    { "type": "image_picker", "id": "image", "label": "背景画像（任意）" },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "背景画像の暗さ",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "default": 20
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "高さ",
+      "options": [
+        { "value": "medium", "label": "中" },
+        { "value": "large", "label": "大" },
+        { "value": "full", "label": "画面いっぱい" }
+      ],
+      "default": "large"
+    }
+  ],
+  "presets": [{ "name": "ブランドヒーロー" }]
+}
+{% endschema %}

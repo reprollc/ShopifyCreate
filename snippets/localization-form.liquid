@@ -1,0 +1,17 @@
+{%- comment -%}
+  国/地域（通貨）セレクター。Shopify マーケットで複数の国を有効にしている場合のみ表示されます。
+  Usage: {% render 'localization-form', id: 'Header' %}
+{%- endcomment -%}
+{%- if localization.available_countries.size > 1 -%}
+  {%- form 'localization', class: 'localization-form', data-localization-form: '' -%}
+    <label for="Country-{{ id }}" class="visually-hidden">{{ 'localization.country_label' | t }}</label>
+    <select id="Country-{{ id }}" name="country_code" class="localization-form__select" data-localization-select>
+      {%- for country in localization.available_countries -%}
+        <option value="{{ country.iso_code }}"{% if country.iso_code == localization.country.iso_code %} selected{% endif %}>
+          {{ country.currency.iso_code }} {{ country.currency.symbol }} / {{ country.name }}
+        </option>
+      {%- endfor -%}
+    </select>
+    <noscript><button type="submit" class="link-button">{{ 'localization.update' | t }}</button></noscript>
+  {%- endform -%}
+{%- endif -%}
