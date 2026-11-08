@@ -14,7 +14,7 @@
   <body class="template-gift-card">
     <main class="section">
       <div class="page-width page-width--narrow text-center gift-card">
-        <h1 class="page-title">{{ shop.name }}</h1>
+        <h1 class="password__logo">{% render 'brand-logo' %}<span class="visually-hidden">{{ shop.name }}</span></h1>
         <p>{{ 'gift_cards.issued.subtext' | t }}</p>
         <p class="gift-card__value">{{ gift_card.balance | money }}</p>
         {%- if gift_card.enabled == false or gift_card.expired -%}

@@ -4,13 +4,15 @@
       "type": "hero-statement",
       "settings": {
         "eyebrow": "WELCOME TO",
-        "heading": "YOUR\nBRAND",
+        "heading": "RELU\nARCHIVE",
         "button_label": "SHOP NOW",
         "button_link": "shopify://collections/all",
         "background": "#ECB572",
         "text_color": "#ffffff",
         "overlay_opacity": 20,
-        "height": "large"
+        "height": "large",
+        "show_logo": true,
+        "logo_width": 560
       }
     },
     "new_arrivals": {

@@ -25,6 +25,11 @@
             | image_url: width: 600
             | image_tag: width: section.settings.logo_width, height: logo_height, alt: shop.name, loading: 'eager', class: 'site-header__logo-image'
           }}
+        {%- elsif section.settings.use_brand_logo -%}
+          <span class="site-header__brand-logo" style="--logo-width: {{ section.settings.logo_width }}px;">
+            {% render 'brand-logo' %}
+          </span>
+          <span class="visually-hidden">{{ shop.name }}</span>
         {%- else -%}
           <span class="site-header__shop-name">{{ shop.name }}</span>
         {%- endif -%}
@@ -164,6 +169,7 @@
       ],
       "default": "centered"
     },
+    { "type": "checkbox", "id": "use_brand_logo", "label": "テーマ内蔵のブランドロゴ（SVG）を使う", "default": true, "info": "ロゴ画像を設定した場合は、そちらが優先されます" },
     { "type": "image_picker", "id": "logo", "label": "ロゴ画像" },
     {
       "type": "range",

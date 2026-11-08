@@ -16,7 +16,11 @@
     {%- if s.eyebrow != blank -%}
       <p class="hero-statement__eyebrow">{{ s.eyebrow | escape }}</p>
     {%- endif -%}
-    {%- if s.heading != blank -%}
+    {%- if s.show_logo -%}
+      <h2 class="hero-statement__logo" style="--logo-width: {{ s.logo_width }}px;">
+        {% render 'brand-logo' %}
+      </h2>
+    {%- elsif s.heading != blank -%}
       <h2 class="hero-statement__heading">{{ s.heading | escape | newline_to_br }}</h2>
     {%- endif -%}
     {%- if s.text != blank -%}
@@ -37,7 +41,18 @@
   "settings": [
     { "type": "paragraph", "content": "単色背景＋大きなタイトルのメインビジュアルです。画像を設定すると背景画像になります。" },
     { "type": "text", "id": "eyebrow", "label": "小見出し", "default": "WELCOME TO" },
-    { "type": "textarea", "id": "heading", "label": "タイトル", "default": "YOUR\nBRAND" },
+    { "type": "checkbox", "id": "show_logo", "label": "タイトルの代わりにブランドロゴを表示", "default": true },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "label": "ロゴの幅",
+      "min": 200,
+      "max": 900,
+      "step": 20,
+      "unit": "px",
+      "default": 560
+    },
+    { "type": "textarea", "id": "heading", "label": "タイトル（ロゴ非表示時）", "default": "RELU\nARCHIVE" },
     { "type": "richtext", "id": "text", "label": "説明文" },
     { "type": "text", "id": "button_label", "label": "ボタンのラベル", "default": "SHOP NOW" },
     { "type": "url", "id": "button_link", "label": "ボタンのリンク" },
