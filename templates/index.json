@@ -25,7 +25,8 @@
         "heading_alignment": "center",
         "show_view_all": true,
         "view_all_style": "button",
-        "view_all_label": "SHOP NOW"
+        "view_all_label": "SHOP NOW",
+        "collection": "new-arrivals"
       }
     },
     "lookbook": {
