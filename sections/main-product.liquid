@@ -65,6 +65,16 @@
               <div class="main-product__description rte" {{ block.shopify_attributes }}>{{ product.description }}</div>
             {%- endif -%}
 
+          {%- when 'specs' -%}
+            <div class="main-product__specs" {{ block.shopify_attributes }}>
+              {% render 'product-specs', product: product, type: 'details', block: block %}
+            </div>
+
+          {%- when 'measurements' -%}
+            <div class="main-product__specs" {{ block.shopify_attributes }}>
+              {% render 'product-specs', product: product, type: 'measurements', block: block %}
+            </div>
+
           {%- when 'text' -%}
             <div class="main-product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
 
@@ -195,6 +205,30 @@
       ]
     },
     { "type": "description", "name": "商品説明", "limit": 1 },
+    {
+      "type": "specs",
+      "name": "商品詳細（表）",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "見出し", "default": "商品詳細" },
+        { "type": "header", "content": "コンディションのランクの説明" },
+        { "type": "paragraph", "content": "メタフィールド「コンディション」に入力したランクの横に、この説明が表示されます" },
+        { "type": "text", "id": "rank_s", "label": "S", "default": "新品・未使用に近い状態" },
+        { "type": "text", "id": "rank_a", "label": "A", "default": "目立つ傷や汚れのない美品" },
+        { "type": "text", "id": "rank_ab", "label": "AB", "default": "多少の使用感はあるものの、良好な状態" },
+        { "type": "text", "id": "rank_b", "label": "B", "default": "使用感や小さな傷・汚れがある状態" },
+        { "type": "text", "id": "rank_c", "label": "C", "default": "目立つ傷・汚れ・ダメージがある状態" }
+      ]
+    },
+    {
+      "type": "measurements",
+      "name": "サイズ（実寸の表）",
+      "limit": 1,
+      "settings": [
+        { "type": "text", "id": "heading", "label": "見出し", "default": "サイズ（実寸）" },
+        { "type": "text", "id": "note", "label": "注記", "default": "平置きで測った実寸です。多少の誤差はご了承ください。" }
+      ]
+    },
     {
       "type": "text",
       "name": "テキスト",

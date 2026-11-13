@@ -56,6 +56,26 @@
             "heading": "お取り置き・お支払いについて",
             "content": "<p>お取り置きやお支払い方法については、お気軽にお問い合わせください。</p>"
           }
+        },
+        "specs": {
+          "type": "specs",
+          "settings": {
+            "heading": "商品詳細"
+          }
+        },
+        "measurements": {
+          "type": "measurements",
+          "settings": {
+            "heading": "サイズ（実寸）",
+            "note": "平置きで測った実寸です。多少の誤差はご了承ください。"
+          }
+        },
+        "authenticity": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "真贋・ヴィンテージ品について",
+            "content": "<p>当店の商品はすべて、専門のスタッフが真贋を確認した正規品です。</p><p>ヴィンテージ品のため、記載のない小さな傷や使用感がある場合があります。状態は商品画像とあわせてご確認ください。</p>"
+          }
         }
       },
       "block_order": [
@@ -64,7 +84,10 @@
         "price",
         "buy_buttons",
         "question",
+        "specs",
+        "measurements",
         "description",
+        "authenticity",
         "shipping",
         "hold",
         "returns",

@@ -183,6 +183,27 @@
       "unavailable": "Unavailable",
       "quick_view": "Quick view",
       "more_from_vendor": "More from {{ vendor }}"
+    },
+    "specs": {
+      "brand": "Brand",
+      "condition": "Condition",
+      "condition_notes": "Condition details",
+      "size_label": "Tagged size",
+      "material": "Material",
+      "fur_type": "Fur type",
+      "color": "Color",
+      "accessories": "Accessories",
+      "origin": "Country of origin",
+      "sku": "Item no.",
+      "measure_length": "Length",
+      "measure_chest": "Chest width",
+      "measure_shoulder": "Shoulder width",
+      "measure_sleeve": "Sleeve length",
+      "measure_waist": "Waist",
+      "measure_hip": "Hip",
+      "measure_inseam": "Inseam",
+      "measure_total_length": "Total length",
+      "measure_other": "Other"
     }
   },
   "sections": {

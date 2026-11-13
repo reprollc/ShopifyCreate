@@ -183,6 +183,27 @@
       "unavailable": "この組み合わせは選択できません",
       "quick_view": "詳細を見る",
       "more_from_vendor": "{{ vendor }} のその他のアイテム"
+    },
+    "specs": {
+      "brand": "ブランド",
+      "condition": "コンディション",
+      "condition_notes": "状態の詳細",
+      "size_label": "表記サイズ",
+      "material": "素材",
+      "fur_type": "毛皮の種類",
+      "color": "カラー",
+      "accessories": "付属品",
+      "origin": "原産国",
+      "sku": "管理番号",
+      "measure_length": "着丈",
+      "measure_chest": "身幅",
+      "measure_shoulder": "肩幅",
+      "measure_sleeve": "袖丈",
+      "measure_waist": "ウエスト",
+      "measure_hip": "ヒップ",
+      "measure_inseam": "股下",
+      "measure_total_length": "総丈",
+      "measure_other": "その他"
     }
   },
   "sections": {

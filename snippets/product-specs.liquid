@@ -1,0 +1,102 @@
+{%- comment -%}
+  商品の詳細情報（メタフィールド）を表で表示します。空の項目は表示しません。
+  メタフィールドの定義は README の「商品情報（メタフィールド）」を参照してください。
+
+  Usage:
+    {% render 'product-specs', product: product, type: 'details', block: block %}
+    {% render 'product-specs', product: product, type: 'measurements', block: block %}
+{%- endcomment -%}
+{%- liquid
+  assign m = product.metafields.custom
+-%}
+{%- case type -%}
+  {%- when 'details' -%}
+    {%- liquid
+      assign sku = product.selected_or_first_available_variant.sku
+      assign condition = m.condition.value | strip
+      assign condition_key = condition | downcase | prepend: 'rank_'
+      assign condition_text = block.settings[condition_key]
+    -%}
+    {%- capture rows -%}
+        {%- if product.vendor != blank -%}
+          <tr><th scope="row">{{ 'products.specs.brand' | t }}</th><td>{{ product.vendor | escape }}</td></tr>
+        {%- endif -%}
+        {%- if condition != blank -%}
+          <tr>
+            <th scope="row">{{ 'products.specs.condition' | t }}</th>
+            <td>
+              <strong class="spec-table__rank">{{ condition | escape }}</strong>
+              {%- if condition_text != blank %}<span class="spec-table__note">{{ condition_text | escape }}</span>{% endif -%}
+            </td>
+          </tr>
+        {%- endif -%}
+        {%- if m.condition_notes.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.condition_notes' | t }}</th><td>{{ m.condition_notes.value | escape | newline_to_br }}</td></tr>
+        {%- endif -%}
+        {%- if m.size_label.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.size_label' | t }}</th><td>{{ m.size_label.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if m.material.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.material' | t }}</th><td>{{ m.material.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if m.fur_type.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.fur_type' | t }}</th><td>{{ m.fur_type.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if m.color.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.color' | t }}</th><td>{{ m.color.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if m.accessories.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.accessories' | t }}</th><td>{{ m.accessories.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if m.origin.value != blank -%}
+          <tr><th scope="row">{{ 'products.specs.origin' | t }}</th><td>{{ m.origin.value | escape }}</td></tr>
+        {%- endif -%}
+        {%- if sku != blank -%}
+          <tr><th scope="row">{{ 'products.specs.sku' | t }}</th><td>{{ sku | escape }}</td></tr>
+        {%- endif -%}
+    {%- endcapture -%}
+    {%- if rows != blank -%}
+      <table class="spec-table">
+        <caption class="spec-table__caption">{{ block.settings.heading | escape }}</caption>
+        <tbody>{{ rows }}</tbody>
+      </table>
+    {%- endif -%}
+
+  {%- when 'measurements' -%}
+    {%- liquid
+      assign keys = 'length,chest,shoulder,sleeve,waist,hip,inseam,total_length' | split: ','
+      assign has_any = false
+      for key in keys
+        if m[key].value != blank
+          assign has_any = true
+          break
+        endif
+      endfor
+      if m.measurements_other.value != blank
+        assign has_any = true
+      endif
+    -%}
+    {%- if has_any -%}
+      <table class="spec-table spec-table--measurements">
+        <caption class="spec-table__caption">{{ block.settings.heading | escape }}</caption>
+        <tbody>
+          {%- for key in keys -%}
+            {%- assign value = m[key].value | strip -%}
+            {%- if value != blank -%}
+              {%- assign label_key = 'products.specs.measure_' | append: key -%}
+              <tr>
+                <th scope="row">{{ label_key | t }}</th>
+                <td>{{ value | escape }}{% unless value contains 'cm' %} cm{% endunless %}</td>
+              </tr>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if m.measurements_other.value != blank -%}
+            <tr><th scope="row">{{ 'products.specs.measure_other' | t }}</th><td>{{ m.measurements_other.value | escape | newline_to_br }}</td></tr>
+          {%- endif -%}
+        </tbody>
+      </table>
+      {%- if block.settings.note != blank -%}
+        <p class="spec-table__footnote">{{ block.settings.note | escape }}</p>
+      {%- endif -%}
+    {%- endif -%}
+{%- endcase -%}

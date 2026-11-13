@@ -618,3 +618,13 @@ textarea.field { min-height: 10rem; resize: vertical; }
 .site-header--inline .site-header__brand-logo { margin: 0; }
 .hero-statement__logo { width: min(var(--logo-width, 560px), 80vw); margin: 0 auto; }
 .password__logo { width: min(28rem, 70vw); margin: 0 auto 3.2rem; }
+
+/* Product spec tables */
+.spec-table { width: 100%; font-size: 1.3rem; border-top: 1px solid var(--color-border); }
+.spec-table__caption { text-align: left; padding: 0 0 .8rem; font-size: 1.1rem; letter-spacing: .14em; text-transform: uppercase; color: var(--color-text-subdued); }
+.spec-table th, .spec-table td { padding: 1rem 0; border-bottom: 1px solid var(--color-border); vertical-align: top; text-align: left; }
+.spec-table th { width: 9.6rem; padding-right: 1.6rem; font-weight: 400; color: var(--color-text-subdued); white-space: nowrap; }
+.spec-table__rank { margin-right: .8rem; font-size: 1.5rem; }
+.spec-table__note { color: var(--color-text-subdued); font-size: 1.2rem; }
+.spec-table--measurements td { font-variant-numeric: tabular-nums; }
+.spec-table__footnote { margin: .8rem 0 0; font-size: 1.1rem; color: var(--color-text-subdued); }
